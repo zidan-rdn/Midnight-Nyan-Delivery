@@ -1,0 +1,48 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0b0b16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+#game-wrap {
+  position: relative;
+  width: 800px;
+  height: 400px;
+}
+
+#gameCanvas {
+  display: block;
+  width: 800px;
+  height: 400px;
+  background: #14142b;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+#jumpBtn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 70px;
+  height: 70px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.9;
+}
+
+#jumpBtn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#jumpBtn:active {
+  transform: scale(0.9);
+}
