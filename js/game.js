@@ -6,24 +6,24 @@ const W = canvas.width, H = canvas.height;
 const ROOF_TIERS = [190, 220, 290]; 
 const FALL_LIMIT = H; 
 
-// ====== AUDIO SETUP ======
-// 1. Inisialisasi Audio
+// AUDIO
+// Deklarasi Audio
 const bgMusic = new Audio('../assets/cat-walk.mp3.mpeg');
-bgMusic.loop = true; // Bikin musiknya muter terus
+bgMusic.loop = true;
 
-const jumpSFX = new Audio('../assets/game-jump.wav'); // Asumsi ada suara lompat, ganti kalau salah
+const jumpSFX = new Audio('../assets/game-jump.wav');
 const clickSFX = new Audio('../assets/click-long-pop.wav');
 const menuBGM = new Audio('../assets/game-main-menu.mp3.mpeg'); 
 menuBGM.loop = true;
 
-// Volume (Opsional)
+// Volume
 bgMusic.volume = 0.5;
 menuBGM.volume = 0.5;
 jumpSFX.volume = 0.7;
 clickSFX.volume = 0.8;
 
 
-// ====== LOAD ASSETS ======
+//  LOAD ASSETS
 function loadImg(src) {
   const img = new Image();
   img.src = '../assets/' + src;
@@ -57,7 +57,7 @@ const assets = {
   finishBuilding: loadImg('Gedung_5.png') 
 };
 
-// ====== CHARACTER (Shiroi) ======
+// CHARACTER Shiroi 
 const START_X = 120; 
 
 const shiroi = {
@@ -92,7 +92,7 @@ function resetGame() {
   shiroi.onGround = true;
   initBuildings();
 
-  // --- AUDIO LOGIC ---
+  // AUDIO LOGIC 
   menuBGM.pause();
   menuBGM.currentTime = 0;
   bgMusic.play().catch(e => console.log("Audio play failed:", e));
@@ -109,8 +109,7 @@ function jump() {
     shiroi.jumping = true;
     shiroi.onGround = false;
     
-    // Mainkan SFX lompat
-    jumpSFX.currentTime = 0; // Reset ke awal biar bisa diputar cepat berulang-ulang
+    jumpSFX.currentTime = 0; 
     jumpSFX.play().catch(e => console.log("Jump audio failed:", e));
   }
 }
@@ -126,40 +125,38 @@ if(jumpBtn) jumpBtn.addEventListener('click', () => {
   if (gameState === 'playing') jump();
 });
 
-// ====== MENU & END SCREEN ======
+// MENU
 canvas.addEventListener('click', (e) => {
   const rect = canvas.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
   const mouseY = e.clientY - rect.top;
 
   if (gameState === 'menu') {
-    // Tombol Mulai di Menu 
     if (mouseX >= W / 2 - 100 && mouseX <= W / 2 + 100 && mouseY >= H / 2 + 20 && mouseY <= H / 2 + 70) {
-      clickSFX.play().catch(e => console.log(e)); // SFX Klik
+      clickSFX.play().catch(e => console.log(e)); 
       resetGame();
       gameState = 'playing';
     } else {
-        // Coba mainkan BGM Menu kalau belum main (karena browser butuh interaksi user dulu)
         menuBGM.play().catch(e => console.log("Menu BGM failed:", e));
     }
   } else if (gameState !== 'playing') {
     // Tombol Restart
     if (mouseX >= W / 2 - 140 && mouseX <= W / 2 - 10 && mouseY >= H / 2 + 70 && mouseY <= H / 2 + 115) {
-      clickSFX.play().catch(e => console.log(e)); // SFX Klik
+      clickSFX.play().catch(e => console.log(e)); 
       resetGame();
       gameState = 'playing';
     } 
     // Tombol Kembali ke Menu
     else if (mouseX >= W / 2 + 10 && mouseX <= W / 2 + 140 && mouseY >= H / 2 + 70 && mouseY <= H / 2 + 115) {
-      clickSFX.play().catch(e => console.log(e)); // SFX Klik
+      clickSFX.play().catch(e => console.log(e)); 
       gameState = 'menu';
-      // Mainkan lagi BGM Menu
+      // Mainkan lagi 
       menuBGM.play().catch(e => console.log("Menu BGM failed:", e));
     }
   }
 });
 
-// ====== WORLD STATE ======
+// WORLD STATE 
 let speed = 3;
 let distance = 0;
 const DISTANCE_TARGET = 8000; 
@@ -261,7 +258,7 @@ function hit(a, b) {
         a.y + a.h > b.y;
 }
 
-// ====== UPDATE ======
+// UPDATE
 function update() {
   if (gameState !== 'playing') return;
 
@@ -298,7 +295,7 @@ function update() {
 
   if (shiroi.x + shiroi.w < 0) {
     gameState = 'lost_tertinggal';
-    stopGameAudio(); // Stop musik saat game over
+    stopGameAudio();
   }
 
   const shiroiHitbox = {
@@ -319,7 +316,7 @@ function update() {
 
     if (tile.isFinish) {
         gameState = packagesCollected >= 6 ? 'won' : 'lost_kurang';
-        stopGameAudio(); // Stop musik saat finish
+        stopGameAudio();
     }
   } else {
     shiroi.onGround = false;
@@ -328,7 +325,7 @@ function update() {
 
   if (shiroi.y > FALL_LIMIT) {
     gameState = 'lost_jatuh';
-    stopGameAudio(); // Stop musik saat game over
+    stopGameAudio();
   }
 
   if (shiroi.onGround) {
@@ -351,7 +348,7 @@ function update() {
     
     if (hit(shiroiHitbox, obsHitbox)) {
         gameState = 'lost_nabrak';
-        stopGameAudio(); // Stop musik saat game over
+        stopGameAudio();
     }
   }
   obstacles = obstacles.filter(o => o.x + o.w > 0);
@@ -374,7 +371,7 @@ function update() {
   packages = packages.filter(p => p.x + p.w > 0 && !p.taken);
 }
 
-// ====== DRAW ======
+// DRAW 
 function drawBackground() {
   ctx.drawImage(assets.bglangit, 0, 0, W, H);
   
