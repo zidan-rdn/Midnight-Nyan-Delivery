@@ -1,4 +1,4 @@
-// ====== SETUP ======
+//  SETUP
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const W = canvas.width, H = canvas.height;
@@ -6,7 +6,7 @@ const W = canvas.width, H = canvas.height;
 const ROOF_TIERS = [190, 220, 290]; 
 const FALL_LIMIT = H; 
 
-// ====== AUDIO SETUP ======
+// AUDIO SETUP 
 const bgMusic = new Audio('../assets/Audio/cat-walk.mp3');
 bgMusic.loop = true; 
 
@@ -65,7 +65,7 @@ const assets = {
   finishBuilding: loadImg('Gedung_5.png') 
 };
 
-// ====== CHARACTER (Shiroi) ======
+// CHARACTER Shiroi 
 const START_X = 120; 
 
 const shiroi = {
@@ -136,14 +136,12 @@ document.addEventListener('keydown', (e) => {
 
 const jumpBtn = document.getElementById('jumpBtn');
 if(jumpBtn) {
-  // PERBAIKAN: Gunakan 'pointerdown' alih-alih 'click' agar merespons seketika!
   jumpBtn.addEventListener('pointerdown', (e) => {
-    e.preventDefault(); // Mencegah double-tap behavior
+    e.preventDefault(); 
     if (gameState === 'playing') jump();
   });
 }
 
-// Opsional: Klik di mana saja di area game juga bisa lompat (sangat cocok untuk HP)
 canvas.addEventListener('pointerdown', (e) => {
   if (gameState === 'playing') {
       e.preventDefault();
@@ -151,7 +149,7 @@ canvas.addEventListener('pointerdown', (e) => {
   }
 });
 
-// ====== MENU ======
+// MENU 
 canvas.addEventListener('click', (e) => {
   const rect = canvas.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
@@ -181,7 +179,7 @@ canvas.addEventListener('click', (e) => {
   }
 });
 
-// ====== WORLD STATE ======
+// WORLD STATE 
 let speed = 3;
 let distance = 0;
 const DISTANCE_TARGET = 8000; 
@@ -283,7 +281,7 @@ function hit(a, b) {
         a.y + a.h > b.y;
 }
 
-// ====== UPDATE ======
+// UPDATE 
 function update() {
   if (gameState !== 'playing') return;
 
@@ -401,7 +399,7 @@ function update() {
   packages = packages.filter(p => p.x + p.w > 0 && !p.taken);
 }
 
-// ====== DRAW ======
+// BACKGROUND
 function drawBackground() {
   ctx.drawImage(assets.bglangit, 0, 0, W, H);
   
